@@ -1,0 +1,4 @@
+﻿[submodule "libs/SlopCrew"]
+	path = libs/SlopCrew
+	url = https://github.com/SlopCrew/SlopCrew
+	branch = main

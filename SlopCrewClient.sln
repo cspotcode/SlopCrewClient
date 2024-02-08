@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlopCrewDataRouter", "SlopCrewDataRouter\SlopCrewDataRouter.csproj", "{6E136A0F-E20D-4FA5-AAE0-114966FE4252}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlopCrewClient", "SlopCrewClient\SlopCrewClient.csproj", "{6E136A0F-E20D-4FA5-AAE0-114966FE4252}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlopCrew.API", "libs\SlopCrew\SlopCrew.API\SlopCrew.API.csproj", "{ABE636C1-F89B-44B2-A5D9-6E7EC43512F0}"
 EndProject

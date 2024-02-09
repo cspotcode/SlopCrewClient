@@ -4,9 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlopCrewClient", "SlopCrewC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlopCrew.API", "libs\SlopCrew\SlopCrew.API\SlopCrew.API.csproj", "{ABE636C1-F89B-44B2-A5D9-6E7EC43512F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlopCrew.Plugin", "libs\SlopCrew\SlopCrew.Plugin\SlopCrew.Plugin.csproj", "{120E9374-6376-443B-BB27-4428789BC6F5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlopCrew.Server", "libs\SlopCrew\SlopCrew.Server\SlopCrew.Server.csproj", "{02B47568-9DA6-4D11-AFA6-23330A90040A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{78F14579-ACDD-4C45-9B0C-729A2DF00596}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,13 +20,9 @@ Global
 		{ABE636C1-F89B-44B2-A5D9-6E7EC43512F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABE636C1-F89B-44B2-A5D9-6E7EC43512F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABE636C1-F89B-44B2-A5D9-6E7EC43512F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{120E9374-6376-443B-BB27-4428789BC6F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{120E9374-6376-443B-BB27-4428789BC6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{120E9374-6376-443B-BB27-4428789BC6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{120E9374-6376-443B-BB27-4428789BC6F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02B47568-9DA6-4D11-AFA6-23330A90040A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02B47568-9DA6-4D11-AFA6-23330A90040A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02B47568-9DA6-4D11-AFA6-23330A90040A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02B47568-9DA6-4D11-AFA6-23330A90040A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78F14579-ACDD-4C45-9B0C-729A2DF00596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78F14579-ACDD-4C45-9B0C-729A2DF00596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78F14579-ACDD-4C45-9B0C-729A2DF00596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78F14579-ACDD-4C45-9B0C-729A2DF00596}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

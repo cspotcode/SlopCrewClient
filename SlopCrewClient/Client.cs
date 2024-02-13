@@ -1,6 +1,5 @@
-﻿using System.Text.Json;
+﻿using cspotcode.SlopCrewClient.SlopCrewAPI;
 using ProtoBuf;
-using SlopCrew.API;
 
 namespace cspotcode.SlopCrewClient;
 
@@ -10,11 +9,13 @@ public class Client<T>
     /// SlopCrew never tells us our own player ID.
     /// So when referring to ourselves, referring to packets from the local player, we use this ID.
     /// </summary>
-    public const uint LocalPlayerId = uint.MaxValue - 1; // no strong reason to do -1 except
+    public const uint LocalPlayerId = uint.MaxValue - 1;
+    // no strong reason to do -1 except
     // Winterland already used MaxValue for
     // packets from the server. (even though
     // that code's since been removed from the
     // SlopCrew server)
+    
     public Client(string modName)
     {
         this.modName = modName;

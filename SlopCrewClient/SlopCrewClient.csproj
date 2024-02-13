@@ -26,4 +26,19 @@
       <PackageReference Include="protobuf-net" Version="3.2.30" />
     </ItemGroup>
 
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <PropertyGroup>
+            <LocalPluginBuild>$(SolutionDir)/Build/thunderstore</LocalPluginBuild>
+        </PropertyGroup>
+        
+        <MakeDir Directories="$(LocalPluginBuild)" />
+        <ItemGroup>
+            <_Assets Include="$(SolutionDir)Thunderstore/**/*" />
+            <_BuildOutput Include="$(TargetDir)/**/*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(_Assets)" DestinationFolder="$(LocalPluginBuild)" />
+        <Copy SourceFiles="@(_BuildOutput)" DestinationFolder="$(LocalPluginBuild)" />
+        <Copy SourceFiles="$(SolutionDir)/README.md" DestinationFolder="$(LocalPluginBuild)" />
+    </Target>
+
 </Project>

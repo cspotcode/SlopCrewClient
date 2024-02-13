@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net471</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>SlopCrewDataRouter</RootNamespace>
+        <RootNamespace>cspotcode.SlopCrewClient</RootNamespace>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,7 +17,9 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\libs\SlopCrew\SlopCrew.API\SlopCrew.API.csproj" />
+      <ProjectReference Include="..\libs\SlopCrew\SlopCrew.API\SlopCrew.API.csproj">
+          <Private>false</Private>
+      </ProjectReference>
     </ItemGroup>
 
     <ItemGroup>

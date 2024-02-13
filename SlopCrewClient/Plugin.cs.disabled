@@ -1,0 +1,27 @@
+﻿using BepInEx;
+using UnityEngine;
+
+namespace cspotcode.SlopCrewClient;
+
+[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+public class Plugin : BaseUnityPlugin {
+    public static Plugin Instance;
+
+    public Plugin() {
+        // As early as possible for logging code to use it
+        Debug.Log("SlopCrewClient plugin loaded");
+
+        SlopCrewAPI.APIManager.OnAPIRegistered += api => {
+            Debug.Log("API registered");
+        };
+    }
+
+    private void Awake() {
+        Instance = this;
+    }
+    private void Update() {
+        var installed = SlopCrewAPI.APIManager.IsSlopCrewInstalled;
+        var connected = installed ? SlopCrewAPI.APIManager.API.Connected : false;
+        Debug.Log($"installed:{installed} connected:{connected}");
+    }
+}

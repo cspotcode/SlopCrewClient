@@ -1,5 +1,7 @@
 ﻿# SlopCrewClient
 
+FOR MOD AUTHORS USING SLOPCREW.API
+
 For Bomb Rush Cyberfunk mod authors.  It is a client that wraps SlopCrew's API and makes it easier to
 send and receive custom packets and custom character data. Use it to implement new game modes.
 

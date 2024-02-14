@@ -28,7 +28,7 @@
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <PropertyGroup>
-            <LocalPluginBuild>$(SolutionDir)/Build/thunderstore</LocalPluginBuild>
+            <LocalPluginBuild>$(SolutionDir)/Build/SlopCrewClient</LocalPluginBuild>
         </PropertyGroup>
         
         <MakeDir Directories="$(LocalPluginBuild)" />

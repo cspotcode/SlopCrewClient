@@ -51,7 +51,7 @@ public class Client<T>
     private float tickTimeAccumulator = 0;
     private float smoothedTickTimeAccumulator = 0;
     // This is not hardcoded!  We default to 10 ticks per second, and simulate that when disconnected from SlopCrew.
-    public float TickDuration { get; private set; } = 0f/10;
+    public float TickDuration { get; private set; } = 1f/10;
     private bool receivedTickRateFromRealServer = false;
 
     public bool Enabled => enabled;

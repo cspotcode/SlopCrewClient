@@ -1,5 +1,6 @@
 ﻿using cspotcode.SlopCrewClient.SlopCrewAPI;
 using ProtoBuf;
+using UnityEngine;
 
 namespace cspotcode.SlopCrewClient;
 
@@ -16,16 +17,6 @@ public class Client<T>
     // that code's since been removed from the
     // SlopCrew server)
     
-    public Client(string modName)
-    {
-        this.modName = modName;
-        APIManager.OnAPIRegistered += onSlopCrewAPIRegistered;
-        if (APIManager.API != null)
-        {
-            this.api = APIManager.API;
-        }
-    }
-
     // Queue packets during temporary disconnection? Not today.  Silently drop packets if offline
     // Deduplicate packets? Not today
     // Self-imposed rate-limit?
@@ -37,6 +28,31 @@ public class Client<T>
     public ISlopCrewAPI SlopCrewAPI => api;
     private readonly string modName;
     private bool enabled = false;
+    
+    /// <summary>
+    /// If smoothed servertick is more than this many seconds away from received servertick,
+    /// then smoothed will abruptly reset to the receive servertick.
+    /// Drift smaller than this will be smoothed out.
+    /// </summary>
+    public float MaxAllowedClockDrift = 1;
+    /// <summary>
+    /// When local clock needs to run fast or slow to catch up to/wait for server,
+    /// what percentage speed change to use?
+    /// NOTE be careful adjusting this number, the implementation is naive, and bad values here may break things.
+    /// </summary>
+    public float MaxClockScaling = 0.05f;
+    /// <summary>
+    /// Locally-maintained ServerTick approximation which mimics real ServerTick but using extrapolation
+    /// and smoothing.
+    /// </summary>
+    public ulong CurrentTickSmoothed { get; private set; } = 0;
+    public ulong CurrentTick { get; private set; } = 0;
+    private bool firstTickReceived = false;
+    private float tickTimeAccumulator = 0;
+    private float smoothedTickTimeAccumulator = 0;
+    // This is not hardcoded!  We default to 10 ticks per second, and simulate that when disconnected from SlopCrew.
+    public float TickDuration { get; private set; } = 0f/10;
+    private bool receivedTickRateFromRealServer = false;
 
     public bool Enabled => enabled;
 
@@ -51,6 +67,18 @@ public class Client<T>
     /// </summary>
     public Dictionary<uint, T> CharacterInfo = new();
 #endif
+    
+    public Client(string modName)
+    {
+        this.modName = modName;
+        APIManager.OnAPIRegistered += onSlopCrewAPIRegistered;
+        if (APIManager.API != null)
+        {
+            this.api = APIManager.API;
+        }
+
+        UpdateEmitter.EnsureInstance().OnUpdate += Update;
+    }
 
     /// <summary>
     /// Start listening to SlopCrew's API events.
@@ -105,6 +133,7 @@ public class Client<T>
 #if CUSTOM_CHARACTER_INFO
         api.OnCustomCharacterInfoReceived += onSlopCrewCustomCharacterInfoReceived;
 #endif
+        api.OnServerTickReceived += onSlopCrewServerTickReceived;
     }
 
     private void RemoveListeners()
@@ -113,6 +142,7 @@ public class Client<T>
 #if CUSTOM_CHARACTER_INFO
         api.OnCustomCharacterInfoReceived -= onSlopCrewCustomCharacterInfoReceived;
 #endif
+        api.OnServerTickReceived -= onSlopCrewServerTickReceived;
     }
 
     private void onSlopCrewAPIRegistered(ISlopCrewAPI api)
@@ -149,6 +179,11 @@ public class Client<T>
         }
     }
 
+    private void onSlopCrewServerTickReceived(ulong tick) {
+        CurrentTick = tick;
+        firstTickReceived = true;
+    }
+
     private static T DeserializePacket(byte[] data)
     {
         T packet;
@@ -168,5 +203,41 @@ public class Client<T>
             data = stream.ToArray();
         }
         return data;
+    }
+
+    private void Update() {
+        if (!receivedTickRateFromRealServer && api != null && api.Connected && api.TickRate > 0) {
+            receivedTickRateFromRealServer = true;
+            TickDuration = 1f / api.TickRate;
+        }
+        
+        // Even when disconnected or SlopCrew is not installed, we maintain a local tick.
+        
+        // If max drift exceeded, snap smoothed tick back to raw
+        var clockScale = 1f;
+        var serverIsAhead = CurrentTick > CurrentTickSmoothed;
+        var localIsAhead = CurrentTickSmoothed > CurrentTick;
+        var distance = serverIsAhead ? CurrentTick - CurrentTickSmoothed : CurrentTickSmoothed - CurrentTick;
+        if (TickDuration * distance > MaxAllowedClockDrift) {
+            CurrentTickSmoothed = CurrentTick;
+        }
+        else {
+            // Speed up local to catch server
+            if (serverIsAhead) clockScale = 1 + MaxClockScaling;
+            // Slow down local to fall back to server
+            if (localIsAhead) clockScale = 1 - MaxClockScaling;
+            // Run local clock fast or slow to stay in sync w/server
+        }
+        
+        tickTimeAccumulator += Time.deltaTime;
+        while (tickTimeAccumulator > TickDuration) {
+            tickTimeAccumulator -= TickDuration;
+            CurrentTick++;
+        }
+        smoothedTickTimeAccumulator += Time.deltaTime * clockScale;
+        while (smoothedTickTimeAccumulator > TickDuration) {
+            smoothedTickTimeAccumulator -= TickDuration;
+            CurrentTickSmoothed++;
+        }
     }
 }

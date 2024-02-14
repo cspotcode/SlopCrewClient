@@ -1,4 +1,4 @@
-﻿# SlopCrewClient
+# SlopCrewClient
 
 FOR MOD AUTHORS USING SLOPCREW.API
 

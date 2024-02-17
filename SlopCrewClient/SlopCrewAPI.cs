@@ -55,6 +55,7 @@ public interface ISlopCrewAPI {
 
     public int? StageOverride { get; set; }
 
+    public uint? PlayerId { get; }
     public string? PlayerName { get; }
     public ReadOnlyCollection<uint>? Players { get; }
 
@@ -111,6 +112,7 @@ public class SlopCrewAPI : ISlopCrewAPI {
 
     public int? StageOverride { get => api.StageOverride; set => api.StageOverride = value; }
 
+    public uint? PlayerId { get => api.PlayerId; }
     public string? PlayerName { get => api.PlayerName; }
 
     public ReadOnlyCollection<uint>? Players { get => api.Players; }

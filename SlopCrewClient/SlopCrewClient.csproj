@@ -19,6 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\libs\SlopCrew\SlopCrew.API\SlopCrew.API.csproj">
           <Private>false</Private>
+          <PrivateAssets>all</PrivateAssets>
       </ProjectReference>
     </ItemGroup>
 

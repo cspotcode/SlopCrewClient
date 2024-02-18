@@ -2,6 +2,7 @@
 #pragma warning disable CS8618
 using cspotcode.SlopCrewClient.SlopCrewAPI;
 using ProtoBuf;
+using ProtoBuf.Meta;
 using UnityEngine;
 
 namespace cspotcode.SlopCrewClient;
@@ -26,6 +27,11 @@ public class Client<T>
     // Include player ID in the returned packet struct?
 
     // TODO ensure sync of CustomCharacterData
+
+    static Client() {
+        RuntimeTypeModel.Default.Add(typeof(Vector3)).SetSurrogate(typeof(Vector3Surrogate));
+        RuntimeTypeModel.Default.Add(typeof(Vector2)).SetSurrogate(typeof(Vector2Surrogate));
+    }
 
     private ISlopCrewAPI api => APIManager.API;
     public ISlopCrewAPI SlopCrewAPI => APIManager.API;

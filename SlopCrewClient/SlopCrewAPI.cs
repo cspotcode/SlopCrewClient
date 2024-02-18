@@ -14,27 +14,31 @@ public class APIManager {
     public static bool IsSlopCrewInstalled {
         get {
             if (!_CheckedIfSlopCrewInstalled) {
-                _IsSlopCrewInstalled = Chainloader.PluginInfos.Keys.Contains(SlopCrewGUID);
-                _CheckedIfSlopCrewInstalled = true;
+                throw new Exception("SlopCrewClient not initialized yet");
             }
-
             return _IsSlopCrewInstalled;
         }
     }
 
     public static ISlopCrewAPI? API { get; private set; }
-    static APIManager() {
+    internal static void Init() {
+        _IsSlopCrewInstalled = Chainloader.PluginInfos.Keys.Contains(SlopCrewGUID);
+        _CheckedIfSlopCrewInstalled = true;
         if (IsSlopCrewInstalled) {
             SlopCrew_Init();
         }
     }
     private static void SlopCrew_Init() {
         SlopCrew.API.APIManager.OnAPIRegistered += api => {
+            if (API != null) {
+                throw new Exception("SlopCrew API unexpectedly registered multiple times.");
+            }
             API = new SlopCrewAPI(api);
             OnAPIRegistered?.Invoke(API);
         };
         if (SlopCrew.API.APIManager.API != null) {
             API = new SlopCrewAPI(SlopCrew.API.APIManager.API);
+            OnAPIRegistered?.Invoke(API);
         }
     }
     public static event Action<ISlopCrewAPI>? OnAPIRegistered;

@@ -15,10 +15,6 @@ public class Plugin : BaseUnityPlugin {
     private void Awake() {
         Instance = this;
         CustomAppAPIPatch.AttemptPatch();
-    }
-    private void Update() {
-        // var installed = SlopCrewAPI.APIManager.IsSlopCrewInstalled;
-        // var connected = installed ? SlopCrewAPI.APIManager.API.Connected : false;
-        // Debug.Log($"installed:{installed} connected:{connected}");
+        SlopCrewAPI.APIManager.Init();
     }
 }

@@ -27,8 +27,8 @@ public class Client<T>
 
     // TODO ensure sync of CustomCharacterData
 
-    private ISlopCrewAPI api = null;
-    public ISlopCrewAPI SlopCrewAPI => api;
+    private ISlopCrewAPI api => APIManager.API;
+    public ISlopCrewAPI SlopCrewAPI => APIManager.API;
     private readonly string modName;
     private bool enabled = false;
     
@@ -75,10 +75,6 @@ public class Client<T>
     {
         this.modName = modName;
         APIManager.OnAPIRegistered += onSlopCrewAPIRegistered;
-        if (APIManager.API != null)
-        {
-            this.api = APIManager.API;
-        }
 
         UpdateEmitter.EnsureInstance().OnUpdate += Update;
     }
@@ -96,7 +92,7 @@ public class Client<T>
         enabled = true;
         if (api != null)
         {
-            EnableForApi(api);
+            AddListeners();
         }
     }
 
@@ -104,7 +100,9 @@ public class Client<T>
     {
         if (enabled == false) return;
         enabled = false;
-        RemoveListeners();
+        if (api != null) {
+            RemoveListeners();
+        }
     }
 
     public void Send(T packet, bool receiveLocally)
@@ -128,9 +126,8 @@ public class Client<T>
     public delegate void CharacterInfoReceivedHandler(uint playerId, T packet, bool local);
 #endif
 
-    private void EnableForApi(ISlopCrewAPI api)
+    private void AddListeners()
     {
-        this.api = api;
         RemoveListeners();
         api.OnCustomPacketReceived += onSlopCrewCustomPacketReceived;
 #if CUSTOM_CHARACTER_INFO
@@ -148,17 +145,11 @@ public class Client<T>
         api.OnServerTickReceived -= onSlopCrewServerTickReceived;
     }
 
-    private void onSlopCrewAPIRegistered(ISlopCrewAPI api)
+    private void onSlopCrewAPIRegistered(ISlopCrewAPI _)
     {
-        if (this.api != null)
-        {
-            throw new Exception("SlopCrew API unexpectedly registered multiple times.");
-        }
-
-        this.api = api;
         if (enabled)
         {
-            EnableForApi(api);
+            AddListeners();
         }
     }
 

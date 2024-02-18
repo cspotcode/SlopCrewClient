@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#pragma warning disable CS8625
+#pragma warning disable CS8618
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace cspotcode.SlopCrewClient;

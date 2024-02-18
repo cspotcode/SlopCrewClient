@@ -1,4 +1,6 @@
-﻿using cspotcode.SlopCrewClient.SlopCrewAPI;
+﻿#pragma warning disable CS8625
+#pragma warning disable CS8618
+using cspotcode.SlopCrewClient.SlopCrewAPI;
 using ProtoBuf;
 using UnityEngine;
 
@@ -25,7 +27,7 @@ public class Client<T>
 
     // TODO ensure sync of CustomCharacterData
 
-    private ISlopCrewAPI api;
+    private ISlopCrewAPI api = null;
     public ISlopCrewAPI SlopCrewAPI => api;
     private readonly string modName;
     private bool enabled = false;

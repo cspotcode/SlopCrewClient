@@ -7,6 +7,7 @@ namespace cspotcode.SlopCrewClient;
 public class Client<T>
 {
     /// <summary>
+    /// TODO stop using this once PR is merged to give clients their own ID
     /// SlopCrew never tells us our own player ID.
     /// So when referring to ourselves, referring to packets from the local player, we use this ID.
     /// </summary>

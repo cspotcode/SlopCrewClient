@@ -22,7 +22,7 @@ public class APIManager {
         }
     }
 
-    public static SlopCrewAPI? API { get; private set; }
+    public static ISlopCrewAPI? API { get; private set; }
     static APIManager() {
         if (IsSlopCrewInstalled) {
             SlopCrew_Init();
@@ -37,7 +37,7 @@ public class APIManager {
             API = new SlopCrewAPI(SlopCrew.API.APIManager.API);
         }
     }
-    public static event Action<SlopCrewAPI>? OnAPIRegistered;
+    public static event Action<ISlopCrewAPI>? OnAPIRegistered;
 }
 
 // Verbatim copy from SlopCrew.API source: https://github.com/SlopCrew/SlopCrew/blob/main/SlopCrew.API/ISlopCrewAPI.cs

@@ -27,19 +27,18 @@
       <PackageReference Include="protobuf-net" Version="3.2.30" />
     </ItemGroup>
 
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Target Name="CopyToSolutionBuild" AfterTargets="PostBuildEvent" Condition="'*Undefined*' != '$(SolutionDir)'">
         <PropertyGroup>
-            <LocalPluginBuild>$(SolutionDir)/Build/SlopCrewClient</LocalPluginBuild>
+            <LocalPluginBuildDir>$(SolutionDir)/Build/SlopCrewClient</LocalPluginBuildDir>
+            <LocalPluginBuildZip>$(SolutionDir)/Build/SlopCrewClient.zip</LocalPluginBuildZip>
         </PropertyGroup>
         
-        <MakeDir Directories="$(LocalPluginBuild)" />
         <ItemGroup>
-            <_Assets Include="$(SolutionDir)Thunderstore/**/*" />
-            <_BuildOutput Include="$(TargetDir)/**/*" />
+            <_Files Include="$(SolutionDir)Thunderstore/**/*" />
+            <_Files Include="$(TargetDir)/**/*" />
+            <_Files Include="$(SolutionDir)/README.md" />
         </ItemGroup>
-        <Copy SourceFiles="@(_Assets)" DestinationFolder="$(LocalPluginBuild)" />
-        <Copy SourceFiles="@(_BuildOutput)" DestinationFolder="$(LocalPluginBuild)" />
-        <Copy SourceFiles="$(SolutionDir)/README.md" DestinationFolder="$(LocalPluginBuild)" />
+        <Copy SourceFiles="@(_Files)" DestinationFolder="$(LocalPluginBuildDir)\%(RecursiveDir)" />
+        <ZipDirectory DestinationFile="$(LocalPluginBuildZip)" SourceDirectory="$(LocalPluginBuildDir)" Overwrite="true" />
     </Target>
-
 </Project>

@@ -27,9 +27,13 @@ internal class CustomAppAPIPatch {
         __result = assembly.GetTypes().Where(t => {
             try {
                 return baseType.IsAssignableFrom(t) && t != baseType;
-            } catch(TypeLoadException e) {
-                // Swallow it
-                return false;
+            } catch(Exception e) {
+                if (e is TypeLoadException || e is ReflectionTypeLoadException) {
+                    // Swallow it
+                    return false;
+                }
+                else
+                    throw;
             }
         });
         return false;

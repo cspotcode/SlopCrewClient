@@ -1,5 +1,6 @@
 ﻿using BepInEx.Bootstrap;
 using System.Collections.ObjectModel;
+using RealAPI = SlopCrew.API.ISlopCrewAPI;
 
 namespace cspotcode.SlopCrewClient.SlopCrewAPI;
 
@@ -78,73 +79,74 @@ public interface ISlopCrewAPI {
 
 // Implement ISlopCrew by delegation
 public class SlopCrewAPI : ISlopCrewAPI {
-    private SlopCrew.API.ISlopCrewAPI api;
+    // Intentionally avoid any reference to SlopCrew.API.ISlopCrewAPI
+    // in interface, so that reflection never throws errors when loading this type.
+    private readonly object api;
 
-    internal SlopCrewAPI(SlopCrew.API.ISlopCrewAPI api) {
-        this.api = api;
+    internal SlopCrewAPI(object api) {
+        // Casting unnecessary, but ensures an error is thrown if the passed value is wrong type
+        this.api = (RealAPI)api;
     }
-    
-    // Implement the entire ISlopCrewAPI by delegation
 
-    public string ServerAddress { get => api.ServerAddress; }
+    public string ServerAddress { get => ((RealAPI)api).ServerAddress; }
 
-    public int PlayerCount { get => api.PlayerCount; }
-    
+    public int PlayerCount { get => ((RealAPI)api).PlayerCount; }
+
     public event Action<int> OnPlayerCountChanged
     {
-        add { api.OnPlayerCountChanged += value; }
-        remove { api.OnPlayerCountChanged -= value; }
+        add { ((RealAPI) api).OnPlayerCountChanged += value; }
+        remove { ((RealAPI)api).OnPlayerCountChanged -= value; }
     }
 
-    public bool Connected { get => api.Connected; }
+    public bool Connected { get => ((RealAPI)api).Connected; }
 
     public event Action OnConnected
     {
-        add { api.OnConnected += value; }
-        remove { api.OnConnected -= value; }
+        add { ((RealAPI)api).OnConnected += value; }
+        remove { ((RealAPI)api).OnConnected -= value; }
     }
     
     public event Action OnDisconnected
     {
-        add { api.OnDisconnected += value; }
-        remove { api.OnDisconnected -= value; }
+        add { ((RealAPI)api).OnDisconnected += value; }
+        remove { ((RealAPI)api).OnDisconnected -= value; }
     }
     
-    public ulong Latency { get => api.Latency; }
+    public ulong Latency { get => ((RealAPI)api).Latency; }
 
-    public int TickRate { get => api.TickRate; }
+    public int TickRate { get => ((RealAPI)api).TickRate; }
 
-    public int? StageOverride { get => api.StageOverride; set => api.StageOverride = value; }
+    public int? StageOverride { get => ((RealAPI)api).StageOverride; set => ((RealAPI)api).StageOverride = value; }
 
-    public uint? PlayerId { get => api.PlayerId; }
-    public string? PlayerName { get => api.PlayerName; }
+    public uint? PlayerId { get => ((RealAPI)api).PlayerId; }
+    public string? PlayerName { get => ((RealAPI)api).PlayerName; }
 
-    public ReadOnlyCollection<uint>? Players { get => api.Players; }
+    public ReadOnlyCollection<uint>? Players { get => ((RealAPI)api).Players; }
 
-    public string? GetGameObjectPathForPlayerID(uint playerId) => api.GetGameObjectPathForPlayerID(playerId);
+    public string? GetGameObjectPathForPlayerID(uint playerId) => ((RealAPI)api).GetGameObjectPathForPlayerID(playerId);
 
-    public uint? GetPlayerIDForGameObjectPath(string gameObjectPath) => api.GetPlayerIDForGameObjectPath(gameObjectPath);
+    public uint? GetPlayerIDForGameObjectPath(string gameObjectPath) => ((RealAPI)api).GetPlayerIDForGameObjectPath(gameObjectPath);
 
-    public bool? PlayerIDExists(uint playerId) => api.PlayerIDExists(playerId);
+    public bool? PlayerIDExists(uint playerId) => ((RealAPI)api).PlayerIDExists(playerId);
 
-    public string? GetPlayerName(uint playerId) => api.GetPlayerName(playerId);
-    
-    public void SendCustomPacket(string id, byte[] data) => api.SendCustomPacket(id, data);
+    public string? GetPlayerName(uint playerId) => ((RealAPI)api).GetPlayerName(playerId);
 
-    public void SetCustomCharacterInfo(string id, byte[]? data) => api.SetCustomCharacterInfo(id, data);
+    public void SendCustomPacket(string id, byte[] data) => ((RealAPI)api).SendCustomPacket(id, data);
+
+    public void SetCustomCharacterInfo(string id, byte[]? data) => ((RealAPI)api).SetCustomCharacterInfo(id, data);
     
     public event Action<uint, string, byte[]> OnCustomPacketReceived {
-        add { api.OnCustomPacketReceived += value; }
-        remove { api.OnCustomPacketReceived -= value; }
+        add { ((RealAPI)api).OnCustomPacketReceived += value; }
+        remove { ((RealAPI)api).OnCustomPacketReceived -= value; }
     }
 
     public event Action<uint, string, byte[]> OnCustomCharacterInfoReceived {
-        add { api.OnCustomCharacterInfoReceived += value; }
-        remove { api.OnCustomCharacterInfoReceived -= value; }
+        add { ((RealAPI)api).OnCustomCharacterInfoReceived += value; }
+        remove { ((RealAPI)api).OnCustomCharacterInfoReceived -= value; }
     }
 
     public event Action<ulong> OnServerTickReceived {
-        add { api.OnServerTickReceived += value; }
-        remove { api.OnServerTickReceived -= value; }
+        add { ((RealAPI)api).OnServerTickReceived += value; }
+        remove { ((RealAPI)api).OnServerTickReceived -= value; }
     }
 }

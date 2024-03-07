@@ -1,7 +1,7 @@
 {
     "name": "SlopCrewClient",
     "author": "cspotcode",
-    "description": "",
+    "description": "FOR MOD AUTHORS USING SLOPCREW.API - A client that wraps SlopCrew's API",
     "version_number": "0.0.2",
     "website_url": "https://github.com/cspotcode/SlopCrewClient",
     "dependencies": [

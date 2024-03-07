@@ -24,14 +24,31 @@ internal class CustomAppAPIPatch {
     //   private static IEnumerable<Type> FindDerivedTypes(Assembly assembly, Type baseType) {
     //     return assembly.GetTypes().Where(t => baseType.IsAssignableFrom(t) && t != baseType);
     private static bool FindDerivedTypes_Prefix(Assembly assembly, Type baseType, ref IEnumerable<Type> __result) {
-        __result = assembly.GetTypes().Where(t => {
-            try {
-                return baseType.IsAssignableFrom(t) && t != baseType;
-            } catch(TypeLoadException e) {
+        // Assemblies can throw typeload exceptions.
+        try {
+            __result = assembly.GetTypes().Where(t => {
+                // Or the types inside the assemblies.
+                try {
+                    return baseType.IsAssignableFrom(t) && t != baseType;
+                }
+                catch (Exception e) {
+                    if (e is TypeLoadException || e is ReflectionTypeLoadException) {
+                        // Swallow it
+                        return false;
+                    }
+                    else
+                        throw;
+                }
+            });
+        }
+        catch (Exception e) {
+            if (e is TypeLoadException || e is ReflectionTypeLoadException) {
                 // Swallow it
                 return false;
             }
-        });
+            else
+                throw;
+        }
         return false;
     }
 }

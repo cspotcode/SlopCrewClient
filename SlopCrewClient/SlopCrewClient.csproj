@@ -31,12 +31,12 @@
     <Target Name="CopyToSolutionBuild" AfterTargets="PostBuildEvent" Condition="'*Undefined*' != '$(SolutionDir)'">
         <PropertyGroup>
             <LocalPluginBuildDir>$(SolutionDir)/Build/SlopCrewClient</LocalPluginBuildDir>
-            <LocalPluginBuildZip>$(SolutionDir)/Build/SlopCrewClient.zip</LocalPluginBuildZip>
+            <LocalPluginBuildZip>$(SolutionDir)/Build/SlopCrewClient-$(Version).zip</LocalPluginBuildZip>
         </PropertyGroup>
         
         <ItemGroup>
             <_Files Include="$(SolutionDir)Thunderstore/**/*" />
-            <_Files Include="$(TargetDir)/**/*" />
+            <_Files Include="$(TargetDir)/**/*" Exclude="**/*.pdb" />
             <_Files Include="$(SolutionDir)/README.md" />
         </ItemGroup>
         <Copy SourceFiles="@(_Files)" DestinationFolder="$(LocalPluginBuildDir)\%(RecursiveDir)" />

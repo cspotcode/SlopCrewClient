@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <RootNamespace>cspotcode.SlopCrewClient</RootNamespace>
         <LangVersion>latest</LangVersion>
-        <Version>0.0.3</Version>
+        <Version>0.0.4</Version>
     </PropertyGroup>
 
     <ItemGroup>

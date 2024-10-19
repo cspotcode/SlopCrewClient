@@ -35,9 +35,9 @@
         </PropertyGroup>
         
         <ItemGroup>
-            <_Files Include="$(SolutionDir)Thunderstore/**/*" />
+            <_Files Include="$(ProjectDir)/../Thunderstore/**/*" />
             <_Files Include="$(TargetDir)/**/*" Exclude="**/*.pdb" />
-            <_Files Include="$(SolutionDir)/README.md" />
+            <_Files Include="$(ProjectDir)/../README.md" />
         </ItemGroup>
         <Copy SourceFiles="@(_Files)" DestinationFolder="$(LocalPluginBuildDir)\%(RecursiveDir)" />
         <ZipDirectory DestinationFile="$(LocalPluginBuildZip)" SourceDirectory="$(LocalPluginBuildDir)" Overwrite="true" />

@@ -19,8 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\libs\SlopCrew\SlopCrew.API\SlopCrew.API.csproj" />
-      <ProjectReference Include="..\SlopCrewClient\SlopCrewClient.csproj" />
+      <ProjectReference Include="..\libs\SlopCrew\SlopCrew.API\SlopCrew.API.csproj" Private="false" />
+      <ProjectReference Include="..\SlopCrewClient\SlopCrewClient.csproj" Private="false" />
     </ItemGroup>
 
     <ItemGroup>

@@ -25,7 +25,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="protobuf-net" Version="3.2.30" />
+      <!--
+      Private="true" (default) means we copy dependency DLLs to *this project's* output directory to ship to Thunderstore.
+      
+      PrivateAssets="runtime" means:
+        compile=public
+        runtime=private
+      This means:
+        We *do* expose protobuf APIs to dependees, they can use protobuf APIs in their code.
+        We *don't* expose protobuf DLLs to dependees, they cannot accidentally copy them into their output directory.
+      -->
+      <PackageReference Include="protobuf-net" Version="3.2.30" PrivateAssets="runtime" />
     </ItemGroup>
 
     <Target Name="CopyToSolutionBuild" AfterTargets="PostBuildEvent" Condition="'*Undefined*' != '$(SolutionDir)'">
